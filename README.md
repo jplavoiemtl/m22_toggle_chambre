@@ -1,4 +1,4 @@
-Module TTGO T1 ESP32 pour changer l'état de lampes (salon, statue, cuisine, galerie)
+# Module TTGO T1 ESP32 pour changer l'état de lampes
 
 Le bouton gauche change la lampe que l'on veut contrôler et le bouton droit change l'état de la lampe.
 
