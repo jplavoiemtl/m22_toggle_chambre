@@ -18,10 +18,16 @@ typedef WebServer WiFiWebServer;
 const char TOG_OUT[] = "m18toggle";       //MQTT topic de commande de toogle
 const char PAYLOAD_SAL[] = "salon";       //toggle lampe salon
 const char PAYLOAD_STA[] = "statue";      //toggle lampe statue
+const char PAYLOAD_CUI[] = "cuisine";     //toggle lampe cuisine
+const char PAYLOAD_GAL[] = "galerie";     //toggle lampe galerie
 const char SALON_ON[] = "sa_on";
 const char SALON_OFF[] = "sa_of";
 const char STATUE_ON[] = "st_on";
 const char STATUE_OFF[] = "st_of";
+const char CUISINE_ON[] = "cu_on";
+const char CUISINE_OFF[] = "cu_of";
+const char GALERIE_ON[] = "ga_on";
+const char GALERIE_OFF[] = "ga_of";
 
 // Create a client class to connect to the MQTT server
 WiFiClient espClient;
@@ -44,7 +50,7 @@ const int period_mqtt = 15000;                   //retry delay MQTT
 Timer t_NTP;                                     //Timer for time sync over NTP
 const int period_NTP = 1800000;                  //sync time delay every 30 min 1800000 s
 Timer t_LCDON;                                   //Timer for LCD ON
-const int period_LCDON = 45000;                  //Time LCD to be ON, 30000: 30 sec
+const int period_LCDON = 120000;                  //Time LCD to be ON, 30000: 30 sec
 
 int afterEvent;                                  //for LCD ON timer to kill repeat events
 
@@ -313,6 +319,22 @@ void callback(char* topic, byte* payload, unsigned int length) {
     deviceStatus[1] = "OFF";
   }  
 
+  if (topicString == TOG_OUT && fullPayloadString == CUISINE_ON) { 
+    deviceStatus[2] = "ON";
+  }  
+
+  if (topicString == TOG_OUT && fullPayloadString == CUISINE_OFF) { 
+    deviceStatus[2] = "OFF";
+  }   
+
+  if (topicString == TOG_OUT && fullPayloadString == GALERIE_ON) { 
+    deviceStatus[3] = "ON";
+  }  
+
+  if (topicString == TOG_OUT && fullPayloadString == GALERIE_OFF) { 
+    deviceStatus[3] = "OFF";
+  }  
+
   screenMain();
 }
 
@@ -338,10 +360,10 @@ void processDevice() {
       client.publish(TOG_OUT,PAYLOAD_STA);          //publish toggle lampe statue
       break;
     case 2: // cuisine
-
+      client.publish(TOG_OUT,PAYLOAD_CUI);          //publish toggle lampe cuisine
       break;
     case 3: // galerie
-
+      client.publish(TOG_OUT,PAYLOAD_GAL);          //publish toggle lampe galerie
       break;
     default:
       // Just in case
