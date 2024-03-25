@@ -50,7 +50,7 @@ const int period_mqtt = 15000;                   //retry delay MQTT
 Timer t_NTP;                                     //Timer for time sync over NTP
 const int period_NTP = 1800000;                  //sync time delay every 30 min 1800000 s
 Timer t_LCDON;                                   //Timer for LCD ON
-const int period_LCDON = 120000;                  //Time LCD to be ON, 30000: 30 sec
+const int period_LCDON = 150000;                  //Time LCD to be ON, 30000: 30 sec
 
 int afterEvent;                                  //for LCD ON timer to kill repeat events
 
