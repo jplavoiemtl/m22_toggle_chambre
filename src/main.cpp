@@ -48,7 +48,7 @@ Button2 btn2(BUTTON_2);             //left button
 Timer t_mqtt;                                    //Timer MQTT retry connection
 const int period_mqtt = 15000;                   //retry delay MQTT
 Timer t_NTP;                                     //Timer for time sync over NTP
-const int period_NTP = 1800000;                  //sync time delay every 30 min 1800000 s
+const int period_NTP = 2100000;                  //sync time delay every 30 min 1800000 s
 Timer t_LCDON;                                   //Timer for LCD ON
 const int period_LCDON = 150000;                  //Time LCD to be ON, 30000: 30 sec
 
