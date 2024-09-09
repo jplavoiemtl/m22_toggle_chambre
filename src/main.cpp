@@ -20,6 +20,7 @@ const char PAYLOAD_SAL[] = "salon";       //toggle lampe salon
 const char PAYLOAD_STA[] = "statue";      //toggle lampe statue
 const char PAYLOAD_CUI[] = "cuisine";     //toggle lampe cuisine
 const char PAYLOAD_GAL[] = "galerie";     //toggle lampe galerie
+const char PAYLOAD_PIS[] = "piscine";     //toggle lampe piscine
 const char SALON_ON[] = "sa_on";
 const char SALON_OFF[] = "sa_of";
 const char STATUE_ON[] = "st_on";
@@ -28,6 +29,8 @@ const char CUISINE_ON[] = "cu_on";
 const char CUISINE_OFF[] = "cu_of";
 const char GALERIE_ON[] = "ga_on";
 const char GALERIE_OFF[] = "ga_of";
+const char PISCINE_ON[] = "pi_on";
+const char PISCINE_OFF[] = "pi_of";
 
 // Create a client class to connect to the MQTT server
 WiFiClient espClient;
@@ -90,7 +93,7 @@ char timeStringBuff[12];
 int x = 0;                  //TFT variable
 
 // Array of device names
-String Device[] = {"salon", "statue", "cuisine", "galerie"};
+String Device[] = {"salon", "statue", "cuisine", "galerie", "piscine"};
 const int DeviceCount = sizeof(Device) / sizeof(Device[0]); // Calculate the number of devices
 int deviceIndex = 0;                                        // Array index variable
 // Declare a boolean array to store the status of each device
@@ -100,7 +103,7 @@ String deviceStatus[DeviceCount] = {"OFF"};                   // Initialize all 
 
 //******************************************************************************************************************
 void exitOTAStart() {
-  Serial.println("OTA started");
+  Serial.println("OTA started!");
 }
 
 void exitOTAProgress(unsigned int amount, unsigned int sz) {
@@ -295,6 +298,7 @@ void checkMQTT() {
 
 //******************************************************************************************************************
 //Fonction appelée par le broker MQTT chaque fois qu'un message est publié sur un topic auquel le module est abonné
+
 void callback(char* topic, byte* payload, unsigned int length) {
   String topicString = topic;
   String payloadString = (char*)payload;
@@ -335,6 +339,14 @@ void callback(char* topic, byte* payload, unsigned int length) {
     deviceStatus[3] = "OFF";
   }  
 
+  if (topicString == TOG_OUT && fullPayloadString == PISCINE_ON) { 
+    deviceStatus[4] = "ON";
+  }  
+
+  if (topicString == TOG_OUT && fullPayloadString == PISCINE_OFF) { 
+    deviceStatus[4] = "OFF";
+  }  
+
   screenMain();
 }
 
@@ -365,6 +377,9 @@ void processDevice() {
     case 3: // galerie
       client.publish(TOG_OUT,PAYLOAD_GAL);          //publish toggle lampe galerie
       break;
+    case 4: // piscine
+      client.publish(TOG_OUT,PAYLOAD_PIS);          //publish toggle lampe piscine
+      break;      
     default:
       // Just in case
       Serial.println("Invalid device index!");
